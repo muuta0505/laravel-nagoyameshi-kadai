@@ -15,7 +15,9 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', [UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users.index');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 require __DIR__.'/auth.php';
 
