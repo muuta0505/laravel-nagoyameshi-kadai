@@ -134,7 +134,4 @@ class CategoryTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/admin/categories');
     }
-
 }
-
-

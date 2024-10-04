@@ -16,4 +16,8 @@ class category extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function restaurants() {
+        return $this->belongsToMany(Restaurant::class)->withTimestamps();
+    }
 }
