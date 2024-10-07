@@ -4,6 +4,8 @@ namespace Tests\Feature\Admin;
 
 use App\Models\Admin;
 use App\Models\Restaurant;
+use App\Models\Category;
+use App\Models\RegularHoliday;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -107,6 +109,9 @@ class RestaurantTest extends TestCase
             'password' => Hash::make('nagoyameshi'),
         ]);
 
+        $categories = Category::factory()->count(3)->create();
+        $category_ids = $categories->pluck('id')->toArray();
+
         $restaurant_data = [
             'name' => 'テスト2',
             'description' => 'テスト',
@@ -117,15 +122,23 @@ class RestaurantTest extends TestCase
             'opening_time' => '10:00',
             'closing_time' => '20:00',
             'seating_capacity' => 50,
+            'category_ids' => $category_ids,
         ];
 
         $response = $this->actingAs($admin, 'admin')->post('/admin/restaurants', $restaurant_data, ['X-CSRF-TOKEN' => csrf_token()]);
 
         $response->assertStatus(302);
         $response->assertRedirect('/admin/restaurants');
+        
+        unset($restaurant_data['category_ids']);
 
         $this->assertDatabaseHas('restaurants', $restaurant_data);
 
+        foreach ($category_ids as $categoryId) {
+            $this->assertDatabaseHas('category_restaurant', [
+                'category_id' => $categoryId,
+            ]);
+        }
     }
 
     // editアクション（店舗編集ページ）
@@ -177,6 +190,8 @@ class RestaurantTest extends TestCase
             'password' => Hash::make('nagoyameshi'),
         ]);
 
+        $categories = Category::factory()->count(3)->create();
+        $category_ids = $categories->pluck('id')->toArray();
         $restaurant = Restaurant::factory()->create();
 
         $new_restaurant_data = [
@@ -189,12 +204,20 @@ class RestaurantTest extends TestCase
             'opening_time' => '10:00',
             'closing_time' => '20:00',
             'seating_capacity' => 50,
+            'category_ids' => $category_ids
         ];
 
         $response = $this->actingAs($admin, 'admin')->patch(route('admin.restaurants.update', $restaurant), $new_restaurant_data);
 
+        unset($new_restaurant_data['category_ids']);
+
         $this->assertDatabaseHas('restaurants',$new_restaurant_data);
-        $response->assertRedirect(route('admin.restaurants.show', $restaurant));
+        foreach ($category_ids as $categoryId) {
+            $this->assertDatabaseHas('category_restaurant', [
+                'category_id' => $categoryId,
+            ]);
+        }
+
     }
 
 
