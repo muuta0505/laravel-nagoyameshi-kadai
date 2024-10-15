@@ -31,7 +31,7 @@ class RestaurantController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view ('admin.restaurants.create');
+        return view ('admin.restaurants.create', compact('categories'));
     }
 
     /**
@@ -92,7 +92,7 @@ class RestaurantController extends Controller
     {
         $categories = Category::all();
         $category_ids = $restaurant->categories->pluck('id')->toArray();
-        return view('admin.restaurants.edit', compact('restaurant'));
+        return view('admin.restaurants.edit', compact('restaurant','categories','category_ids'));
     }
 
     /**
