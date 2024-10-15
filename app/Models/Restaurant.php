@@ -28,6 +28,10 @@ class Restaurant extends Model
     ];
 
     public function categories() {
+<<<<<<< HEAD
         return $this->belongsToMany(Category::class,'category_restaurant')->withTimestamps();
+=======
+        return $this->belongsToMany(Category::class)->withTimestamps();
+>>>>>>> feature-category-restaurant
     }
 }
