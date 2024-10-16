@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use App\Models\Category;
+use App\Models\RegularHoliday;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
@@ -32,7 +33,7 @@ class RestaurantController extends Controller
     {
         $categories = Category::all();
         $regular_holidays = RegularHoliday::all();
-        return view ('admin.restaurants.create', compact('categories'));
+        return view ('admin.restaurants.create', compact('categories','regular_holidays'));
     }
 
     /**
@@ -97,7 +98,7 @@ class RestaurantController extends Controller
         $categories = Category::all();
         $regular_holidays = RegularHoliday::all();
         $category_ids = $restaurant->categories->pluck('id')->toArray();
-        return view('admin.restaurants.edit', compact('restaurant','categories','category_ids'));
+        return view('admin.restaurants.edit', compact('restaurant','categories','category_ids','regular_holidays'));
     }
 
     /**
