@@ -111,6 +111,8 @@ class RestaurantTest extends TestCase
 
         $categories = Category::factory()->count(3)->create();
         $category_ids = $categories->pluck('id')->toArray();
+        $regular_holidays = RegularHoliday::factory()->count(3)->create();
+        $regular_holiday_ids = $regular_holidays->pluck('id')->toArray();
 
         $restaurant_data = [
             'name' => 'テスト2',
@@ -123,6 +125,7 @@ class RestaurantTest extends TestCase
             'closing_time' => '20:00',
             'seating_capacity' => 50,
             'category_ids' => $category_ids,
+            'regular_holiday_ids' => $regular_holiday_ids
         ];
 
         $response = $this->actingAs($admin, 'admin')->post('/admin/restaurants', $restaurant_data, ['X-CSRF-TOKEN' => csrf_token()]);
@@ -131,12 +134,18 @@ class RestaurantTest extends TestCase
         $response->assertRedirect('/admin/restaurants');
         
         unset($restaurant_data['category_ids']);
+        unset($restaurant_data['regular_holiday_ids']);
 
         $this->assertDatabaseHas('restaurants', $restaurant_data);
 
         foreach ($category_ids as $categoryId) {
             $this->assertDatabaseHas('category_restaurant', [
                 'category_id' => $categoryId,
+            ]);
+        }
+        foreach ($regular_holiday_ids as $regularHolidayId) {
+            $this->assertDatabaseHas('regular_holiday_restaurant', [
+                'regular_holiday_id' => $regularHolidayId,
             ]);
         }
     }
@@ -194,6 +203,9 @@ class RestaurantTest extends TestCase
         $category_ids = $categories->pluck('id')->toArray();
         $restaurant = Restaurant::factory()->create();
 
+        $regular_holidays = RegularHoliday::factory()->count(3)->create();
+        $regular_holiday_ids = $regular_holidays->pluck('id')->toArray();
+
         $new_restaurant_data = [
             'name' => 'テスト2',
             'description' => 'テスト',
@@ -204,12 +216,15 @@ class RestaurantTest extends TestCase
             'opening_time' => '10:00',
             'closing_time' => '20:00',
             'seating_capacity' => 50,
-            'category_ids' => $category_ids
+            'category_ids' => $category_ids,
+            'regular_holiday_ids' => $regular_holiday_ids
+
         ];
 
         $response = $this->actingAs($admin, 'admin')->patch(route('admin.restaurants.update', $restaurant), $new_restaurant_data);
 
         unset($new_restaurant_data['category_ids']);
+        unset($new_restaurant_data['regular_holiday_ids']);
 
         $this->assertDatabaseHas('restaurants',$new_restaurant_data);
         foreach ($category_ids as $categoryId) {
@@ -217,7 +232,11 @@ class RestaurantTest extends TestCase
                 'category_id' => $categoryId,
             ]);
         }
-
+        foreach ($regular_holiday_ids as $regularHolidayId) {
+            $this->assertDatabaseHas('regular_holiday_restaurant', [
+                'regular_holiday_id' => $regularHolidayId,
+            ]);
+        }
     }
 
 
