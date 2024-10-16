@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Category;
 
 class RestaurantController extends Controller
 {

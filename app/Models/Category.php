@@ -16,11 +16,8 @@ class Category extends Model
         'created_at',
         'updated_at',
     ];
-<<<<<<< HEAD
-=======
 
     public function restaurants() {
         return $this->belongsToMany(Restaurant::class)->withTimestamps();
     }
->>>>>>> feature-category-restaurant
 }
