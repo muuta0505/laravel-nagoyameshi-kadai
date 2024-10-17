@@ -26,7 +26,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
     Route::get('users/{user}', [Admin\UserController::class, 'show'])->name('users.show');
     Route::resource('restaurants', Admin\RestaurantController::class);
     Route::resource('categories', Admin\CategoryController::class);
-
     Route::resource('company', Admin\CompanyController::class);
     Route::resource('terms', Admin\HomeController::class);
 });
