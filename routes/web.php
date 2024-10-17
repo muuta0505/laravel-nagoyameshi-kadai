@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::resource('restaurants', HomeController::class)->only(['index','show']);
+
+    Route::group(['middleware' => ['auth','verified','notsubscribed'],'prefix' => 'subscription', 'as' => 'subscription.'], function () {
+        Route::get('create', [SubscriptionController::class, 'create'])->name('create');
+        Route::post('/', [SubscriptionController::class, 'store'])->name('store');
+        
+    });
+    Route::group(['middleware' => ['auth','verified','subscribed'],'prefix' => 'subscription', 'as' => 'subscription.'], function () {
+        
+        Route::get('edit', [SubscriptionController::class, 'edit'])->name('edit');
+        Route::patch('update', [SubscriptionController::class, 'update'])->name('update');
+        Route::get('cancel', [SubscriptionController::class, 'cancel'])->name('cancel');
+        Route::delete('/', [SubscriptionController::class, 'destroy'])->name('destroy');
+    });
     Route::group(['middleware' => ['auth','verified']], function () {
         Route::resource('user',UserController::class)->only(['index','edit','update']);
     });
