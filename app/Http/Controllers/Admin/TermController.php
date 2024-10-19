@@ -23,6 +23,8 @@ class TermController extends Controller
         $request->validate([
             'content' => 'required',
         ]);
+
+        $term = new Term();
         $term->content = $request->input('content');
         $term->update();
 

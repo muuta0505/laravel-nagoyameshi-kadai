@@ -28,7 +28,7 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update()
+    public function update(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -40,6 +40,8 @@ class CompanyController extends Controller
             'business' => 'required',
             'number_of_employees' => 'required',
         ]);
+
+        $company = new Company();
         $company->name = $request->input('name');
         $company->postal_code = $request->input('postal_code');
         $company->address = $request->input('address');
@@ -50,7 +52,7 @@ class CompanyController extends Controller
         $company->number_of_employees = $request->input('number_of_employees');
         $company->update();
 
-        return redirect()->route('admin.companies.index')
+        return redirect()->route('admin.company.index')
                             ->with('flash_message', '会社概要を編集しました。');
     }
 }
