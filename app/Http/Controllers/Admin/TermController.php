@@ -18,13 +18,12 @@ class TermController extends Controller
         $terms = Term::first();
         return view('admin.terms.edit', compact('term'));
     }
-    public function update(Request $request)
+    public function update(Request $request, Term $term)
     {
         $request->validate([
             'content' => 'required',
         ]);
 
-        $term = new Term();
         $term->content = $request->input('content');
         $term->update();
 

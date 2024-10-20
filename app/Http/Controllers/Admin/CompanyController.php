@@ -28,7 +28,7 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, Company $company)
     {
         $request->validate([
             'name' => 'required',
@@ -41,7 +41,6 @@ class CompanyController extends Controller
             'number_of_employees' => 'required',
         ]);
 
-        $company = new Company();
         $company->name = $request->input('name');
         $company->postal_code = $request->input('postal_code');
         $company->address = $request->input('address');
