@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::resource('restaurants', HomeController::class)->only(['index','show']);
+    Route::resource('restaurants', RestaurantController::class)->only(['index','show']);
 
     Route::group(['middleware' => ['auth','verified','notsubscribed'],'prefix' => 'subscription', 'as' => 'subscription.'], function () {
         Route::get('create', [SubscriptionController::class, 'create'])->name('create');
