@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +47,13 @@ Route::group(['middleware' => 'guest:admin'], function () {
         Route::patch('update', [SubscriptionController::class, 'update'])->name('update');
         Route::get('cancel', [SubscriptionController::class, 'cancel'])->name('cancel');
         Route::delete('/', [SubscriptionController::class, 'destroy'])->name('destroy');
+        Route::resource('restaurants.reviews',ReviewController::class)->only(['create','store','edit','update','destroy']);
+    });
+    Route::group(['middleware' => ['auth','verified','subscribed']], function () {
+    Route::resource('restaurants.reviews',ReviewController::class)->only(['create','store','edit','update','destroy']);
     });
     Route::group(['middleware' => ['auth','verified']], function () {
         Route::resource('user',UserController::class)->only(['index','edit','update']);
+        Route::get('/restaurants/{restaurant}/reviews',[ReviewController::class, 'index'])->name('restaurants.reviews.index');
     });
 });
