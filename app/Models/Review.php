@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
+    protected $fillable = [ 
+        'name',
+        'content',
+        'score',
+        'restaurant_id',
+        'user_id',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     public function restaurant()
     {

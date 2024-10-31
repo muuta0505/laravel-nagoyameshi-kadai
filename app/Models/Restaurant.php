@@ -20,7 +20,6 @@ class Restaurant extends Model
         'opening_time',
         'closing_time',
         'seating_capacity',
-
     ];
 
     protected $hidden = [
@@ -39,5 +38,9 @@ class Restaurant extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function ratingSortable($query, $direction) {
+        return $query->withAvg('reviews', 'score')->orderBy('reviews_avg_score', $direction);
     }
 }
