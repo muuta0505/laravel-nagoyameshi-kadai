@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::group(['middleware' => 'guest:admin'], function () {
     });
     Route::group(['middleware' => ['auth','verified','subscribed']], function () {
     Route::resource('restaurants.reviews',ReviewController::class)->only(['create','store','edit','update','destroy']);
+    Route::resource('restaurants.reservations',ReservationController::class)->only(['create','store']);
+      Route::resource('reservations',ReservationController::class)->only(['index','destroy']);
     });
     Route::group(['middleware' => ['auth','verified']], function () {
         Route::resource('user',UserController::class)->only(['index','edit','update']);
