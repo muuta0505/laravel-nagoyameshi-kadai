@@ -17,7 +17,8 @@ class ReservationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'reserved_datetime' => now(),
+            'number_of_people' => fake()->numberBetween(1, 50),
         ];
     }
 }
