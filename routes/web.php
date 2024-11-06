@@ -9,6 +9,8 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\TermController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,9 +56,12 @@ Route::group(['middleware' => 'guest:admin'], function () {
     Route::resource('restaurants.reviews',ReviewController::class)->only(['create','store','edit','update','destroy']);
     Route::resource('restaurants.reservations',ReservationController::class)->only(['create','store']);
       Route::resource('reservations',ReservationController::class)->only(['index','destroy']);
+      Route::resource('favorites', FavoriteController::class)->only(['index', 'store','destroy']);
     });
     Route::group(['middleware' => ['auth','verified']], function () {
         Route::resource('user',UserController::class)->only(['index','edit','update']);
         Route::get('/restaurants/{restaurant}/reviews',[ReviewController::class, 'index'])->name('restaurants.reviews.index');
+        Route::get('company', [Company::class, 'index'])->name('company.index');
+        Route::get('terms', [Term::class, 'index'])->name('terms.index');
     });
 });
