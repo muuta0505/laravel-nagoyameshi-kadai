@@ -38,6 +38,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resource('restaurants', RestaurantController::class)->only(['index','show']);
+    Route::get('company', [CompanyController::class, 'index'])->name('company.index');
+    Route::get('terms', [TermController::class, 'index'])->name('terms.index');
 
     Route::group(['middleware' => ['auth','verified','notsubscribed'],'prefix' => 'subscription', 'as' => 'subscription.'], function () {
         Route::get('create', [SubscriptionController::class, 'create'])->name('create');
@@ -61,7 +63,5 @@ Route::group(['middleware' => 'guest:admin'], function () {
     Route::group(['middleware' => ['auth','verified']], function () {
         Route::resource('user',UserController::class)->only(['index','edit','update']);
         Route::get('/restaurants/{restaurant}/reviews',[ReviewController::class, 'index'])->name('restaurants.reviews.index');
-        Route::get('company', [Company::class, 'index'])->name('company.index');
-        Route::get('terms', [Term::class, 'index'])->name('terms.index');
     });
 });

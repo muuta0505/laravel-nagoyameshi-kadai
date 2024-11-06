@@ -11,6 +11,6 @@ class TermController extends Controller
     public function index()
     {
         $term = Term::orderBy('created_at')->first();
-        return view('terms.index', compact('terms'));
+        return view('terms.index', compact('term'));
     }
 }
