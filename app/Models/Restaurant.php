@@ -56,5 +56,4 @@ class Restaurant extends Model
     public function favorite_user() {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
-
 }

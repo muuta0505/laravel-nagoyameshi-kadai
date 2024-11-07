@@ -10,6 +10,8 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\TermController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin
 Route::group(['middleware' => 'guest:admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resource('restaurants', RestaurantController::class)->only(['index','show']);
+    Route::get('company', [CompanyController::class, 'index'])->name('company.index');
+    Route::get('terms', [TermController::class, 'index'])->name('terms.index');
 
     Route::group(['middleware' => ['auth','verified','notsubscribed'],'prefix' => 'subscription', 'as' => 'subscription.'], function () {
         Route::get('create', [SubscriptionController::class, 'create'])->name('create');
